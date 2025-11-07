@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace AI_maze
 {
-    internal class Maze
+    public class Maze
     {
 
         public int Height, Width;
 
-        public Cell[,] Cells;
+        public Cell[,] Cells { get; private set; }
 
         Random rnd = new Random();
         public Pen wallPen = new Pen(Color.Black, 2);
@@ -71,7 +71,7 @@ namespace AI_maze
             }
         }
 
-        public List<Cell> GetVisitNeightborn(Cell cell)
+        List<Cell> GetVisitNeightborn(Cell cell)
         {
             List<Cell> neighbors = new List<Cell>();
 
@@ -101,7 +101,7 @@ namespace AI_maze
         }
 
 
-        public void RemoveWall(Cell current, Cell Check)
+        void RemoveWall(Cell current, Cell Check)
         {
             int divX = current.X - Check.X;
             int divY = current.Y - Check.Y;
@@ -174,7 +174,7 @@ namespace AI_maze
             }
         }
 
-        public void DrawCell(Graphics graphics, Pen pen, Cell cell, int cellSize, Point offset)
+        void DrawCell(Graphics graphics, Pen pen, Cell cell, int cellSize, Point offset)
         {
             int x = cell.X * cellSize + offset.X;
             int y = cell.Y * cellSize + offset.Y;

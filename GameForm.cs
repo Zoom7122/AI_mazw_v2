@@ -50,35 +50,41 @@ namespace WinFormsApp1
 
         private void InitializeBot()
         {
+            if (mazeForBot == null) return;
+
             // Создаем бота с лабиринтом для бота
-            Point botMazeOffset = new Point(10, 10); // Отступ внутри панели бота
+            Point botMazeOffset = new Point(10, 10);
             bot = new Bot(mazeForBot, cellSize, botMazeOffset);
 
             // Добавляем бота на панель бота
             botMazePanel.Controls.Add(bot.PictureBox);
             bot.PictureBox.BringToFront();
 
-            // Подписываемся на событие завершения пути ботом
             bot.OnBotFinished += (s, e) =>
             {
                 MessageBox.Show("Бот прошел лабиринт!", "Результат");
             };
 
-            // Запускаем движение бота
             bot.StartMoving();
         }
 
         private void BotMazePanel_Paint(object sender, PaintEventArgs e)
         {
+            // Очищаем панель
             e.Graphics.Clear(Color.White);
+
+            // Отрисовываем лабиринт с небольшим отступом от краев панели
             Point panelOffset = new Point(10, 10);
             mazeForBot.Draw(e.Graphics, cellSize, panelOffset);
 
-            // Отрисовываем путь бота (опционально)
-            //bot.DrawPath(e.Graphics, panelOffset, cellSize);
-
+            // Отрисовываем финиш
             DrawFinish(e.Graphics, panelOffset, finishPointForBot, Color.Blue);
+
+            // Подпись для лабиринта бота
             DrawLabel(e.Graphics, "Бот", panelOffset);
+
+            // Если хочешь отрисовать путь бота, добавь:
+            // bot?.DrawPath(e.Graphics, panelOffset, cellSize);
         }
 
         // При закрытии формы останавливаем бота
@@ -185,21 +191,21 @@ namespace WinFormsApp1
             //DrawLabel(e.Graphics, "Игрок", panelOffset);
         }
 
-        private void BotMazePanel_Paint(object sender, PaintEventArgs e)
-        {
-            // Очищаем панель
-            e.Graphics.Clear(Color.White);
+        //private void BotMazePanel_Paint(object sender, PaintEventArgs e)
+        //{
+        //    // Очищаем панель
+        //    e.Graphics.Clear(Color.White);
 
-            // Отрисовываем лабиринт с небольшим отступом от краев панели
-            Point panelOffset = new Point(10, 10);
-            mazeForBot.Draw(e.Graphics, cellSize, panelOffset);
+        //    // Отрисовываем лабиринт с небольшим отступом от краев панели
+        //    Point panelOffset = new Point(10, 10);
+        //    mazeForBot.Draw(e.Graphics, cellSize, panelOffset);
 
-            // Отрисовываем финиш
-            DrawFinish(e.Graphics, panelOffset, finishPointForBot, Color.Blue);
+        //    // Отрисовываем финиш
+        //    DrawFinish(e.Graphics, panelOffset, finishPointForBot, Color.Blue);
 
-            // Подпись для лабиринта бота
-            //DrawLabel(e.Graphics, "Бот", panelOffset);
-        }
+        //    // Подпись для лабиринта бота
+        //    //DrawLabel(e.Graphics, "Бот", panelOffset);
+        //}
 
         private void DrawFinish(Graphics graphics, Point offset, Point finish, Color color)
         {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AI_maze
 {
-    internal class Cell
+    public class Cell
     {
         public int X { get; }
         public int Y { get; }

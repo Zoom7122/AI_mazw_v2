@@ -8,6 +8,12 @@ namespace AI_maze
     {
         public static List<Point> FindPath(Maze maze, Point start, Point finish)
         {
+            // Проверяем валидность входных данных
+            if (maze == null) return null;
+            if (start.X < 0 || start.X >= maze.Width || start.Y < 0 || start.Y >= maze.Height ||
+                finish.X < 0 || finish.X >= maze.Width || finish.Y < 0 || finish.Y >= maze.Height)
+                return null;
+
             int[,] distance = new int[maze.Width, maze.Height];
             Point[,] previous = new Point[maze.Width, maze.Height];
 
@@ -16,62 +22,49 @@ namespace AI_maze
             {
                 for (int y = 0; y < maze.Height; y++)
                 {
-                    distance[x, y] = -1; // -1 означает непосещенную клетку
+                    distance[x, y] = -1;
                     previous[x, y] = new Point(-1, -1);
                 }
             }
 
-            // Очередь для BFS
             Queue<Point> queue = new Queue<Point>();
             distance[start.X, start.Y] = 0;
             queue.Enqueue(start);
 
-            // Направления движения: вверх, вправо, вниз, влево
             Point[] directions = new Point[]
             {
-                new Point(0, -1),  // вверх
-                new Point(1, 0),   // вправо
-                new Point(0, 1),   // вниз
-                new Point(-1, 0)   // влево
+                new Point(0, -1), new Point(1, 0),
+                new Point(0, 1), new Point(-1, 0)
             };
 
-            // BFS
             while (queue.Count > 0)
             {
                 Point current = queue.Dequeue();
 
-                // Если дошли до финиша, выходим
-                if (current == finish)
+                if (current.Equals(finish))
                     break;
 
-                // Проверяем всех соседей
                 foreach (Point dir in directions)
                 {
                     Point neighbor = new Point(current.X + dir.X, current.Y + dir.Y);
 
-                    // Проверяем, что сосед в пределах лабиринта
                     if (neighbor.X >= 0 && neighbor.X < maze.Width &&
-                        neighbor.Y >= 0 && neighbor.Y < maze.Height)
+                        neighbor.Y >= 0 && neighbor.Y < maze.Height &&
+                        CanMove(maze, current, neighbor) &&
+                        distance[neighbor.X, neighbor.Y] == -1)
                     {
-                        // Проверяем, можно ли пройти в этом направлении
-                        if (CanMove(maze, current, neighbor) &&
-                            distance[neighbor.X, neighbor.Y] == -1)
-                        {
-                            distance[neighbor.X, neighbor.Y] = distance[current.X, current.Y] + 1;
-                            previous[neighbor.X, neighbor.Y] = current;
-                            queue.Enqueue(neighbor);
-                        }
+                        distance[neighbor.X, neighbor.Y] = distance[current.X, current.Y] + 1;
+                        previous[neighbor.X, neighbor.Y] = current;
+                        queue.Enqueue(neighbor);
                     }
                 }
             }
 
-            // Восстанавливаем путь от финиша к старту
             return ReconstructPath(previous, finish);
         }
 
         private static bool CanMove(Maze maze, Point from, Point to)
         {
-            // Проверяем, что точки в пределах лабиринта
             if (from.X < 0 || from.X >= maze.Width || from.Y < 0 || from.Y >= maze.Height ||
                 to.X < 0 || to.X >= maze.Width || to.Y < 0 || to.Y >= maze.Height)
                 return false;
@@ -82,35 +75,29 @@ namespace AI_maze
             int dx = to.X - from.X;
             int dy = to.Y - from.Y;
 
-            // Проверяем стены в зависимости от направления
-            if (dx == 1) // Движение вправо
-                return !fromCell.rightWall && !toCell.leftWall;
-            else if (dx == -1) // Движение влево
-                return !fromCell.leftWall && !toCell.rightWall;
-            else if (dy == 1) // Движение вниз
-                return !fromCell.downWall && !toCell.topWall;
-            else if (dy == -1) // Движение вверх
-                return !fromCell.topWall && !toCell.downWall;
+            if (dx == 1) return !fromCell.rightWall && !toCell.leftWall;
+            else if (dx == -1) return !fromCell.leftWall && !toCell.rightWall;
+            else if (dy == 1) return !fromCell.downWall && !toCell.topWall;
+            else if (dy == -1) return !fromCell.topWall && !toCell.downWall;
 
             return false;
         }
 
         private static List<Point> ReconstructPath(Point[,] previous, Point finish)
         {
+            if (previous[finish.X, finish.Y].X == -1) return null;
+
             List<Point> path = new List<Point>();
             Point current = finish;
 
-            // Восстанавливаем путь от финиша к старту
             while (current.X != -1 && current.Y != -1)
             {
                 path.Add(current);
                 current = previous[current.X, current.Y];
             }
 
-            // Разворачиваем путь, чтобы он был от старта к финишу
             path.Reverse();
-
-            return path.Count > 1 ? path : null;
+            return path.Count > 0 ? path : null;
         }
     }
 }
