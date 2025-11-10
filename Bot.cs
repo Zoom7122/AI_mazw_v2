@@ -9,7 +9,7 @@ namespace AI_maze
     public class Bot
     {
         public PictureBox PictureBox { get; private set; }
-        public int Speed { get; set; } = 1;
+        public int Speed { get; set; } = 0;
         public bool IsMoving { get; private set; } = false;
 
         private Maze maze;
