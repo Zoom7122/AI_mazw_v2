@@ -1,11 +1,14 @@
-﻿using System;
+﻿using AI_maze;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using WinFormsApp1.Class;
 
-namespace AI_maze
+namespace WinFormsApp1.Algoritms
 {
     public static class WaveAlgorithm
     {
+        
         public static List<Point> FindPath(Maze maze, Point start, Point finish)
         {
             // Проверяем валидность входных данных

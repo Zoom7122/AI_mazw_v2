@@ -1,4 +1,4 @@
-using AI_maze;
+using WinFormsApp1.Class;
 
 namespace WinFormsApp1
 {

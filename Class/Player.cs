@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace AI_maze
+namespace WinFormsApp1.Class
 {
     public class Player
     {

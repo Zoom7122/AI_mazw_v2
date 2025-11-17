@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using WinFormsApp1.Algoritms;
 using Timer = System.Windows.Forms.Timer;
 
-namespace AI_maze
+namespace WinFormsApp1.Class
 {
     public class Bot
     {

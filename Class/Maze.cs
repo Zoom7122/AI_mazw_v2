@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AI_maze;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AI_maze
+namespace WinFormsApp1.Class
 {
     public class Maze
     {
