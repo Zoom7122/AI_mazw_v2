@@ -32,7 +32,10 @@ namespace WinFormsApp1
             this.ComplexityMaze = ComplexityMaze;
 
             InitializeComponent();
-            InitializePanels();
+
+            InitializePanels(this.ComplexityMaze = ComplexityMaze);
+
+
             InitializeMaze();
             InitializePlayer();
             SpawnButton();
@@ -95,8 +98,13 @@ namespace WinFormsApp1
             base.OnFormClosed(e);
         }
 
-        private void InitializePanels()
+        private void InitializePanels(int complixity)
         {
+
+            int shiftX, shiftY = 200;
+            if (complixity == 15)
+                shiftX = 500;
+            else shiftX = 250;
             // Рассчитываем размер панели на основе размера лабиринта
             int panelSize = ComplexityMaze * cellSize + 50; // +50 для отступов
 
@@ -105,7 +113,7 @@ namespace WinFormsApp1
             playerMazePanel.Size = new Size(panelSize, panelSize);
             playerMazePanel.Location = new Point(
                 (this.ClientSize.Width / 2 - panelSize) / 2 + 150,
-                (this.ClientSize.Height - panelSize) / 2
+                (this.ClientSize.Height - panelSize) / 2 + shiftY
             );
             playerMazePanel.BackColor = Color.White;
             playerMazePanel.BorderStyle = BorderStyle.FixedSingle;
@@ -116,8 +124,8 @@ namespace WinFormsApp1
             botMazePanel = new DoubleBufferedPanel();
             botMazePanel.Size = new Size(panelSize, panelSize);
             botMazePanel.Location = new Point(
-                this.ClientSize.Width / 2 + (this.ClientSize.Width / 2 - panelSize) / 2 + 250, 
-                (this.ClientSize.Height - panelSize) / 2
+                this.ClientSize.Width / 2 + (this.ClientSize.Width / 2 - panelSize) / 2 + shiftX, 
+                (this.ClientSize.Height - panelSize) / 2 + shiftY
             );
             botMazePanel.BackColor = Color.White;
             botMazePanel.BorderStyle = BorderStyle.FixedSingle;
@@ -161,8 +169,7 @@ namespace WinFormsApp1
             exitButton.Text = "Выход";
             exitButton.Size = new Size(100, 40);
             exitButton.Location = new Point(
-                this.ClientSize.Width,
-                500
+                10,10
             );
             exitButton.BackColor = Color.Red;
             exitButton.ForeColor = Color.White;

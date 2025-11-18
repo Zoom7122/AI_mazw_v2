@@ -4,6 +4,8 @@ namespace WinFormsApp1
 {
     public partial class MainMenu : Form
     {
+        private bool isMenuVisible = false;
+        private Panel menuPanel;
         private Player player;
         int complexity = 10;
 
@@ -15,6 +17,7 @@ namespace WinFormsApp1
             InitializeComponent();
             InitializePlayer();
             SpawnButton();
+            InitializeMenuPanel();
 
 
             this.DoubleBuffered = true;
@@ -83,9 +86,121 @@ namespace WinFormsApp1
             this.Controls.Add(complexityChoice);
         }
 
+        private void InitializeMenuPanel()
+        {
+            // Создаем панель меню
+            menuPanel = new Panel();
+            menuPanel.Size = new Size(300, 200);
+            menuPanel.Location = new Point(
+                (this.ClientSize.Width - 300) / 2,
+                (this.ClientSize.Height - 200) / 2
+            );
+            menuPanel.BackColor = Color.DarkSlateBlue;
+            menuPanel.BorderStyle = BorderStyle.FixedSingle;
+            menuPanel.Visible = false; // Изначально скрыта
+
+            // Добавляем заголовок
+            Label titleLabel = new Label();
+            titleLabel.Text = "Выбор сложности";
+            titleLabel.Font = new Font("Arial", 14, FontStyle.Bold);
+            titleLabel.ForeColor = Color.White;
+            titleLabel.Size = new Size(280, 30);
+            titleLabel.Location = new Point(10, 10);
+            titleLabel.TextAlign = ContentAlignment.MiddleCenter;
+            menuPanel.Controls.Add(titleLabel);
+
+            // Кнопка "Легко"
+            Button easyButton = new Button();
+            easyButton.Text = "Легко (5x5)";
+            easyButton.Size = new Size(200, 40);
+            easyButton.Location = new Point(50, 50);
+            easyButton.BackColor = Color.Green;
+            easyButton.ForeColor = Color.White;
+            easyButton.Font = new Font("Arial", 10, FontStyle.Bold);
+            easyButton.Click += (s, e) =>
+            {
+                complexity = 5;
+                HideMenu();
+                MessageBox.Show("Выбрана легкая сложность!");
+            };
+            menuPanel.Controls.Add(easyButton);
+
+            // Кнопка "Средне"
+            Button mediumButton = new Button();
+            mediumButton.Text = "Средне (10x10)";
+            mediumButton.Size = new Size(200, 40);
+            mediumButton.Location = new Point(50, 100);
+            mediumButton.BackColor = Color.Orange;
+            mediumButton.ForeColor = Color.White;
+            mediumButton.Font = new Font("Arial", 10, FontStyle.Bold);
+            mediumButton.Click += (s, e) =>
+            {
+                complexity = 10;
+                HideMenu();
+                MessageBox.Show("Выбрана средняя сложность!");
+            };
+            menuPanel.Controls.Add(mediumButton);
+
+            // Кнопка "Сложно"
+            Button hardButton = new Button();
+            hardButton.Text = "Сложно (15x15)";
+            hardButton.Size = new Size(200, 40);
+            hardButton.Location = new Point(50, 150);
+            hardButton.BackColor = Color.Red;
+            hardButton.ForeColor = Color.White;
+            hardButton.Font = new Font("Arial", 10, FontStyle.Bold);
+            hardButton.Click += (s, e) =>
+            {
+                complexity = 15;
+                HideMenu();
+                MessageBox.Show("Выбрана сложная сложность!");
+            };
+            menuPanel.Controls.Add(hardButton);
+
+            // Кнопка закрытия меню
+            Button closeButton = new Button();
+            closeButton.Text = "?";
+            closeButton.Size = new Size(30, 30);
+            closeButton.Location = new Point(260, 5);
+            closeButton.BackColor = Color.DarkRed;
+            closeButton.ForeColor = Color.White;
+            closeButton.Font = new Font("Arial", 12, FontStyle.Bold);
+            closeButton.Click += (s, e) => HideMenu();
+            menuPanel.Controls.Add(closeButton);
+
+            this.Controls.Add(menuPanel);
+            menuPanel.BringToFront();
+        }
+
+        private void ShowMenu()
+        {
+            isMenuVisible = true;
+            menuPanel.Visible = true;
+            menuPanel.BringToFront();
+
+            // Затемняем фон
+            foreach (Control control in this.Controls)
+            {
+                if (control != menuPanel)
+                    control.Enabled = false;
+            }
+        }
+
+        private void HideMenu()
+        {
+            isMenuVisible = false;
+            menuPanel.Visible = false;
+
+            // Восстанавливаем фон
+            foreach (Control control in this.Controls)
+            {
+                control.Enabled = true;
+            }
+        }
+
         private void ComplexityChoice(object sender, EventArgs e)
         {
-
+            ShowMenu();
         }
 
         private void StartGame(object sender, EventArgs eventArgs)

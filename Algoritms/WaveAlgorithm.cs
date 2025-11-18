@@ -17,7 +17,7 @@ namespace WinFormsApp1.Algoritms
                 finish.X < 0 || finish.X >= maze.Width || finish.Y < 0 || finish.Y >= maze.Height)
                 return null;
 
-            int[,] distance = new int[maze.Width, maze.Height];
+            int[,] distance = new int[maze.Width, maze.Height]; // Расстояние от старта
             Point[,] previous = new Point[maze.Width, maze.Height];
 
             // Инициализация массивов

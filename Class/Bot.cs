@@ -10,7 +10,6 @@ namespace WinFormsApp1.Class
     public class Bot
     {
         public PictureBox PictureBox { get; private set; }
-        public int Speed { get; set; } = 0;
         public bool IsMoving { get; private set; } = false;
 
         private Maze maze;
@@ -19,11 +18,12 @@ namespace WinFormsApp1.Class
         private int currentPathIndex = 0;
         private int cellSize;
         private Point mazeOffset;
-
         private Color botColor = Color.Red;
+        public int Complexity_Bot;
 
-        public Bot(Maze maze, int cellSize, Point mazeOffset)
+        public Bot(Maze maze, int cellSize, Point mazeOffset, int Complexity_Bot =1000)
         {
+            this.Complexity_Bot = Complexity_Bot;
             this.maze = maze ?? throw new ArgumentNullException(nameof(maze));
             this.cellSize = cellSize;
             this.mazeOffset = mazeOffset;
@@ -64,7 +64,7 @@ namespace WinFormsApp1.Class
         private void SetupMovementTimer()
         {
             movementTimer = new Timer();
-            movementTimer.Interval = 100;
+            movementTimer.Interval = Complexity_Bot;
             movementTimer.Tick += (s, e) => MoveAlongPath();
         }
 
