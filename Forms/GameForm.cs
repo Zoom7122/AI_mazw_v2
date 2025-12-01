@@ -22,6 +22,7 @@ namespace WinFormsApp1
         private Point finishPointForBot;
         private Bot bot;
         private int ComplexityMaze { get; set; }
+        private TimerForGame gameTimer;
 
         // Панели для лабиринтов
         private DoubleBufferedPanel playerMazePanel;
@@ -50,6 +51,13 @@ namespace WinFormsApp1
 
             // Подписываемся на события
             this.KeyDown += GameForm_KeyDown;
+            CreateTimerObj();
+        }
+
+        public void CreateTimerObj()
+        {
+            gameTimer = new TimerForGame(this.ClientSize, this);
+            gameTimer.CreateTimer();
         }
 
         private void InitializeBot()
@@ -85,7 +93,7 @@ namespace WinFormsApp1
             DrawFinish(e.Graphics, panelOffset, finishPointForBot, Color.Blue);
 
             // Подпись для лабиринта бота
-            DrawLabel(e.Graphics, "Бот", panelOffset);
+            DrawLabel(e.Graphics, "", panelOffset);
 
             // Если хочешь отрисовать путь бота, добавь:
             // bot?.DrawPath(e.Graphics, panelOffset, cellSize);

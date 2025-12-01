@@ -8,11 +8,10 @@ namespace WinFormsApp1
         private Panel menuPanel;
         private Player player;
         int complexity = 10;
+        private TimerForGame gameTimer;
 
         public MainMenu()
         {
-            
-
             //инициализация всего
             InitializeComponent();
             InitializePlayer();
@@ -23,6 +22,14 @@ namespace WinFormsApp1
             this.DoubleBuffered = true;
             this.KeyDown += MainMenuForm_KeyDown;
             this.BackColor = Color.Black;
+
+            CreateTimerObj();
+        } 
+
+        public void CreateTimerObj()
+        {
+            gameTimer = new TimerForGame(this.ClientSize, this);
+            gameTimer.CreateTimer();
         }
 
         private void SpawnButton()
