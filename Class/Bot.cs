@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using WinFormsApp1.Algoritms;
@@ -20,6 +21,8 @@ namespace WinFormsApp1.Class
         private Point mazeOffset;
         private Color botColor = Color.Red;
         public int Complexity_Bot;
+        private Stopwatch stopwatch;
+        private long elapsedTimeMs = 0;
 
         public Bot(Maze maze, int cellSize, Point mazeOffset, int Complexity_Bot =1000)
         {
@@ -27,6 +30,8 @@ namespace WinFormsApp1.Class
             this.maze = maze ?? throw new ArgumentNullException(nameof(maze));
             this.cellSize = cellSize;
             this.mazeOffset = mazeOffset;
+            stopwatch = new Stopwatch();
+
 
             InitializeBot();
             FindPath();
@@ -73,6 +78,7 @@ namespace WinFormsApp1.Class
             if (path != null && path.Count > 1 && !IsMoving)
             {
                 IsMoving = true;
+                stopwatch.Start();
                 movementTimer.Start();
             }
         }
@@ -81,6 +87,8 @@ namespace WinFormsApp1.Class
         {
             IsMoving = false;
             movementTimer?.Stop();
+            stopwatch.Stop();
+            elapsedTimeMs = stopwatch.ElapsedMilliseconds;
         }
 
         private void MoveAlongPath()
@@ -104,10 +112,22 @@ namespace WinFormsApp1.Class
         {
             StopMoving();
             currentPathIndex = 0;
+            elapsedTimeMs = 0;
+            stopwatch.Reset();
             if (path != null && path.Count > 0)
             {
                 SetPosition(path[0].X, path[0].Y);
             }
+        }
+
+        public long GetElapsedTimeMs()
+        {
+            return elapsedTimeMs;
+        }
+
+        public TimeSpan GetElapsedTime()
+        {
+            return TimeSpan.FromMilliseconds(elapsedTimeMs);
         }
 
         // Метод для отрисовки пути (опционально)

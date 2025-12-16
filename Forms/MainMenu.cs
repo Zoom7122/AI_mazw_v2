@@ -213,16 +213,17 @@ namespace WinFormsApp1
         private void StartGame(object sender, EventArgs eventArgs)
         {
             GameForm gameForm = new GameForm(complexity);
-            gameForm.Show();
+            var result = gameForm.ShowDialog();
 
-            // Скрываем текущую форму (меню)
-            this.Hide();
-
-            // Обработчик закрытия игровой формы
-            gameForm.FormClosed += (s, args) =>
+            if (result == DialogResult.Retry)
             {
-                this.Show(); // Показываем меню снова при закрытии игры
-            };
+                // Пользователь хочет новую игру
+                StartGame(sender, eventArgs);
+            }
+            else
+            {
+                this.Show(); // Возвращаемся в меню
+            }
         }
         private void Exit_clic(object srnder, EventArgs e)
         {

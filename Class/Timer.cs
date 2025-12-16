@@ -20,6 +20,16 @@ namespace WinFormsApp1.Class
             _form= form;
         }
 
+        public void StopTimer()
+        {
+            gameTimer.Stop();
+        }
+
+        public int GetElapsedSeconds()
+        {
+            return elapsedSeconds;
+        }
+
         public void CreateTimer()
         {
             timeLabel = new Label();
