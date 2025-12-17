@@ -40,7 +40,7 @@ namespace WinFormsApp1
             this.BackColor = Color.Black;
 
             Button startButton = new Button();
-            startButton.Text = "Играть";
+            startButton.Text = "Start";
             startButton.Size = new Size(
                 (int)(this.ClientSize.Width * 0.30),
                 (int)(this.ClientSize.Height * 0.10)
@@ -60,7 +60,7 @@ namespace WinFormsApp1
             this.Controls.Add(startButton);
 
             Button exitButton = new Button();
-            exitButton.Text = "Выход";
+            exitButton.Text = "Exit";
             exitButton.Size = startButton.Size;
             exitButton.Location = new Point(
                 (this.ClientSize.Width - exitButton.Width) / 2,
@@ -77,7 +77,7 @@ namespace WinFormsApp1
             this.Controls.Add(exitButton);
 
             Button complexityChoice = new Button();
-            complexityChoice.Text = "Выбор сложности";
+            complexityChoice.Text = "Complexity";
             complexityChoice.Size = startButton.Size;
             complexityChoice.Location = new Point(
                 (this.ClientSize.Width - exitButton.Width) / 2 + 200,
@@ -108,7 +108,7 @@ namespace WinFormsApp1
 
             // Добавляем заголовок
             Label titleLabel = new Label();
-            titleLabel.Text = "Выбор сложности";
+            titleLabel.Text = "Choice";
             titleLabel.Font = new Font("Arial", 14, FontStyle.Bold);
             titleLabel.ForeColor = Color.White;
             titleLabel.Size = new Size(280, 30);
@@ -118,7 +118,7 @@ namespace WinFormsApp1
 
             // Кнопка "Легко"
             Button easyButton = new Button();
-            easyButton.Text = "Легко (5x5)";
+            easyButton.Text = "(5x5)";
             easyButton.Size = new Size(200, 40);
             easyButton.Location = new Point(50, 50);
             easyButton.BackColor = Color.Green;
@@ -128,13 +128,13 @@ namespace WinFormsApp1
             {
                 complexity = 5;
                 HideMenu();
-                MessageBox.Show("Выбрана легкая сложность!");
+                MessageBox.Show("5 X 5!");
             };
             menuPanel.Controls.Add(easyButton);
 
             // Кнопка "Средне"
             Button mediumButton = new Button();
-            mediumButton.Text = "Средне (10x10)";
+            mediumButton.Text = "(10x10)";
             mediumButton.Size = new Size(200, 40);
             mediumButton.Location = new Point(50, 100);
             mediumButton.BackColor = Color.Orange;
@@ -144,13 +144,13 @@ namespace WinFormsApp1
             {
                 complexity = 10;
                 HideMenu();
-                MessageBox.Show("Выбрана средняя сложность!");
+                MessageBox.Show("10 X 10!");
             };
             menuPanel.Controls.Add(mediumButton);
 
             // Кнопка "Сложно"
             Button hardButton = new Button();
-            hardButton.Text = "Сложно (15x15)";
+            hardButton.Text = "(15x15)";
             hardButton.Size = new Size(200, 40);
             hardButton.Location = new Point(50, 150);
             hardButton.BackColor = Color.Red;
@@ -160,7 +160,7 @@ namespace WinFormsApp1
             {
                 complexity = 15;
                 HideMenu();
-                MessageBox.Show("Выбрана сложная сложность!");
+                MessageBox.Show("15 X 15!");
             };
             menuPanel.Controls.Add(hardButton);
 

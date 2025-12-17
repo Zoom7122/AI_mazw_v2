@@ -26,7 +26,7 @@ namespace WinFormsApp1
         {
             // Настройки формы
             this.Text = "Результаты игры";
-            this.Size = new Size(450, 350);
+            this.Size = new Size(600, 600);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.BackColor = Color.FromArgb(240, 240, 240);
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
