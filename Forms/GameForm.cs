@@ -5,14 +5,15 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WinFormsApp1.Algoritms;
 using WinFormsApp1.Class;
-using System.Text.Json;
-using System.IO;
 
 namespace WinFormsApp1
 {
@@ -682,6 +683,14 @@ namespace WinFormsApp1
                     return;
                 }
 
+                // Останавливаем и удаляем старого бота полностью
+                if (bot != null)
+                {
+                    bot.StopMoving();
+                    bot.PictureBox.Dispose();
+                    bot = null;
+                }
+
                 // Восстанавливаем сложность
                 ComplexityMaze = save.Complexity;
 
@@ -724,33 +733,19 @@ namespace WinFormsApp1
                 // Восстанавливаем таймер
                 if (gameTimer != null)
                 {
-                    // Сброс таймера с сохраненным временем
                     gameTimer.StopTimer();
-                    // Запускаем таймер с нужным временем
-                    // Нужно добавить метод SetTime в TimerForGame или пересоздать
+                    // Здесь нужно установить время из сохранения
+                    // Добавьте в TimerForGame метод SetTime:
+                    // gameTimer.SetTime(save.ElapsedSeconds);
                 }
 
-                // Пересоздаем бота
-                if (bot != null)
+                // Теперь создаем нового бота с правильной позицией
+                // Нужно изменить InitializeBot, чтобы он принимал начальную позицию
+                InitializeBotWithPosition(save.BotPosition.X, save.BotPosition.Y);
+
+                if (save.IsBotMoving && !botFinished)
                 {
-                    bot.StopMoving();
-                    this.Controls.Remove(bot.PictureBox);
-                }
-
-                InitializeBot();
-
-                // Устанавливаем позицию бота
-                if (bot != null)
-                {
-                    bot.PictureBox.Location = new Point(
-                        botMazePanel.Location.X + 10 + save.BotPosition.X * cellSize + cellSize / 4,
-                        botMazePanel.Location.Y + 10 + save.BotPosition.Y * cellSize + cellSize / 4
-                    );
-
-                    if (save.IsBotMoving && !botFinished)
-                    {
-                        bot.StartMoving();
-                    }
+                    bot.StartMoving();
                 }
 
                 // Обновляем отрисовку
@@ -764,6 +759,48 @@ namespace WinFormsApp1
             {
                 MessageBox.Show($"Ошибка загрузки: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+        private void InitializeBotWithPosition(int startCellX, int startCellY)
+        {
+            if (mazeForBot == null) return;
+
+            // Создаем бота с лабиринтом для бота
+            Point botMazeOffset = new Point(10, 10);
+            bot = new Bot(mazeForBot, cellSize, botMazeOffset);
+
+            // Устанавливаем начальную позицию бота
+            bot.PictureBox.Location = new Point(
+                botMazePanel.Location.X + botMazeOffset.X + startCellX * cellSize + cellSize / 4,
+                botMazePanel.Location.Y + botMazeOffset.Y + startCellY * cellSize + cellSize / 4
+            );
+
+            // Добавляем бота на панель бота
+            botMazePanel.Controls.Add(bot.PictureBox);
+            bot.PictureBox.BringToFront();
+
+            // Пересчитываем путь от текущей позиции до финиша
+            RecalculateBotPathFromPosition(startCellX, startCellY);
+
+            bot.OnBotFinished += (s, e) =>
+            {
+                botFinished = true;
+                botTimeMs = bot.GetElapsedTimeMs();
+                Debug.WriteLine($"Бот дошел до финиша! Время: {botTimeMs} мс");
+                ShowTemporaryMessage($"Бот дошел до финиша!\nВремя: {TimeSpan.FromMilliseconds(botTimeMs):mm\\:ss\\.fff}");
+                CheckIfBothFinished();
+            };
+        }
+
+        private void RecalculateBotPathFromPosition(int startCellX, int startCellY)
+        {
+            // Пересчитываем путь от сохраненной позиции до финиша
+            var path = WaveAlgorithm.FindPath(mazeForBot,
+                new Point(startCellX, startCellY),
+                new Point(mazeForBot.Width - 1, mazeForBot.Height - 1));
+
+            // Здесь нужно обновить путь бота
+            // Вам нужно добавить метод в класс Bot для установки нового пути:
+            // bot.SetPath(path);
         }
     }
 }
